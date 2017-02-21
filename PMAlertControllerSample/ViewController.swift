@@ -105,4 +105,19 @@ class ViewController: UIViewController {
         
         self.present(alertVC, animated: true, completion: nil)
     }
+
+    // NOTE: This only works if you have status bar style set per view controller! 
+    @IBAction func showAlertWhiteStatusBar(_ sender: AnyObject) {
+        let alertVC = PMAlertController(title: "Locate your device", description: "Enables access to your location: discover what you can do when you're traveling and what is available near you.", image: UIImage(named: "flag.png"), style: .alert, statusBarStyle: .lightContent) //Image by freepik.com, taken on flaticon.com
+        
+        alertVC.addAction(PMAlertAction(title: "Cancel", style: .cancel, action: { () -> Void in
+            print("Cancel")
+        }))
+        
+        alertVC.addAction(PMAlertAction(title: "Allow", style: .default, action: { () in
+            print("Allow")
+        }))
+        
+        self.present(alertVC, animated: true, completion: nil)
+    }
 }

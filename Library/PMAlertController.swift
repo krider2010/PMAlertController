@@ -33,7 +33,15 @@ import UIKit
     
     open var gravityDismissAnimation = true
     
+    // NOTE: This only works if you have status bar style set per view controller!
+    open var statusBarStyle: UIStatusBarStyle = .default
+    
     //MARK: - Lifecycle
+    
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        setNeedsStatusBarAppearanceUpdate()
+    }
     
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -46,10 +54,14 @@ import UIKit
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
+
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return statusBarStyle
+    }
     
     
     //MARK: - Initialiser
-    @objc public convenience init(title: String, description: String, image: UIImage?, style: PMAlertControllerStyle) {
+    @objc public convenience init(title: String, description: String, image: UIImage?, style: PMAlertControllerStyle, statusBarStyle: UIStatusBarStyle = .default) {
         self.init()
         let nib = loadNibAlertController()
         if nib != nil{
@@ -58,6 +70,9 @@ import UIKit
         
         self.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
         self.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        
+        self.modalPresentationCapturesStatusBarAppearance = true
+        self.statusBarStyle = statusBarStyle
         
         alertView.layer.cornerRadius = 5
         (image != nil) ? (alertImage.image = image) : (headerViewHeightConstraint.constant = 0)
